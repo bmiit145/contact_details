@@ -1,0 +1,9 @@
+const express = require('express');
+const router = express.Router();
+
+const ContactController = require("../controller/contactController");
+
+router.get("/" , ContactController.viewContact);
+// router.get("/saveExcel" , ContactController.SaveExcelContact);
+
+module.exports = router;
