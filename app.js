@@ -21,8 +21,12 @@ app.set('views', 'views')
 // })
 
 
-const routes = require("./router")
+const routes = require("./router");
+const { redirect } = require('express/lib/response');
 app.use("/" , routes);
-// app.get('/', (req, res) => res.send('Hello World!'))
+app.get('/', (req, res) => {
+    res.redirect('/contact')    
+    // res.send('Hello World!')
+})
 
 app.listen(port, () => console.log(`Whatsapp app listening on port ${port}!`));

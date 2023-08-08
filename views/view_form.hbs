@@ -1,11 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Save excel</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 </head>
+
 <body>
     <h3> Welcome , </h3>
+
+    <form method="post" action="contact/save" id="form_excel" enctype="multipart/form-data">
+        <fieldset>
+            <legend>Contact Excel</legend>
+            <input type="file" name="file1">
+        </fieldset>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        $('#form_excel').validate({
+            rules: {
+                'file1': 'required'
+            },
+            submitHandler: function (form) {
+                form.submit();
+            }
+        })
+    </script>
 </body>
+
 </html>
