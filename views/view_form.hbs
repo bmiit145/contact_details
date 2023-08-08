@@ -12,21 +12,46 @@
 <body>
     <h3> Welcome , </h3>
 
-    <form method="post" action="contact/save" id="form_excel" enctype="multipart/form-data">
+    {{!-- enctype="multipart/form-data" --}}
+    {{!-- needed for if we use a form-data package --}}
+    <form method="post" action="contact/save" id="form_excel" enctype="application/x-www-form-urlencoded">
         <fieldset>
             <legend>Contact Excel</legend>
-            <input type="file" name="file1">
+            <input type="file" name="file">
+            <input type="text" name="abc" value="ABC">
+
         </fieldset>
         <button type="submit">Submit</button>
     </form>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"
+        integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+             {{!-- var formData = $(form).serialize(); --}}
     <script>
         $('#form_excel').validate({
             rules: {
-                'file1': 'required'
+                'file': 'required'
             },
-            submitHandler: function (form) {
-                form.submit();
+            submitHandler: async function   (form) {
+
+                const formData = new FormData();
+                formData.append('username', form.abc.value);
+                formData.append('avatar', form.file.files[0]);
+
+                console.log(form.abc.value);
+
+                try {
+                    const response = await axios.post('/contact/save', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    });
+
+                    console.log('Upload successful:', response.data);
+                } catch (error) {
+                    console.error('Upload failed:', error);
+                }
             }
         })
     </script>

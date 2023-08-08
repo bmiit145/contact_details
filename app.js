@@ -4,6 +4,10 @@ const port = 3000
 
 // view engine
 const hbs = require('hbs')
+const bodyParser = require('body-parser')
+
+app.use(bodyParser.json());       
+app.use(bodyParser.urlencoded({extended: true})); 
 app.set('view engine', 'hbs');
 app.set('views', 'views')
 
@@ -29,4 +33,4 @@ app.get('/', (req, res) => {
     // res.send('Hello World!')
 })
 
-app.listen(port, () => console.log(`Whatsapp app listening on port ${port}!`));
+app.listen(port, () => console.log(`contact  app listening on port ${port}!`));
