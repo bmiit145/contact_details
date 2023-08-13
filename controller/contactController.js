@@ -7,19 +7,10 @@ module.exports = exports = {
         res.render('view_form')
     },
     saveContact: async (req, res) => {
-
-        // Define a schema for the JSON data
-        const Joi = require('joi');
-        const dataSchema = Joi.object({
-            name: Joi.string().required().error(new Error('Name is missing')),
-            age: Joi.number().integer().min(0).required().error(new Error('abc is missing')),
-            // email: Joi.string().email().required()
-        });
-
-
         // read a data of parser
         var data = []
         const csvFilePath = req.file.path;
+
 
         fs.createReadStream(csvFilePath)
             .pipe(csvParser())
