@@ -1,3 +1,4 @@
+require('../public/code.jquery.com_jquery-3.3.1.min')
 const fs = require('fs');
 const csvParser = require('csv-parser');
 
@@ -16,9 +17,9 @@ module.exports = exports = {
             // email: Joi.string().email().required()
         });
 
-        
+
         // read a data of parser
-        var  data = []
+        var data = []
         const csvFilePath = req.file.path;
 
         fs.createReadStream(csvFilePath)
@@ -30,40 +31,27 @@ module.exports = exports = {
                 console.log('CSV file read and processed.');
                 console.log(data);
             });
-            
-            
 
-            // validating data by python ajax
 
-            $.ajax({
-                type: "post",
-                url: "https://validate-conatct-json.vercel.app/validate",
-                data: {
-                    data:data
-                },
-                dataType: "application/json",
-                success: function (response) {
-                    console.log(response);
-                    res.send(response)
-                }
+
+        // validating data by python ajax
+
+        const axios = require('axios');
+
+        const apiUrl = 'https://validate-conatct-json.vercel.app/validate';
+
+        // Data to send in the request
+        const postData = {
+            data: data
+        };
+
+        // Make a POST request with the data
+        axios.post(apiUrl, postData)
+            .then(response => {
+                console.log('Response:', response.data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
-
-            // validate data 
-        // const {error}  = dataSchema.validate(data ,  { abortEarly: false });
-
-        // if (error) {
-        //     res.status(400).json({ error: error});
-        // } else {
-        //     res.json({ message: 'JSON data is valid!' });
-        // }
-
-        // if(req.files){
-        //     res.send("kbhfk");
-        // }else{
-        //     res.send("not found");
-        // }
-
-        // console.log(req.file1);
-        // res.send("successfully")
     }
 }
