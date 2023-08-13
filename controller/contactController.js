@@ -1,4 +1,3 @@
-require('../public/code.jquery.com_jquery-3.3.1.min')
 const fs = require('fs');
 const csvParser = require('csv-parser');
 

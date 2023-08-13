@@ -9,7 +9,7 @@ const hbs = require('hbs')
 
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'hbs');
-app.set('views', 'views')
+// app.set('views', 'views')
 
 
 // mongoes connect 
