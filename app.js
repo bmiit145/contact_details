@@ -5,11 +5,13 @@ const port = 3000
 
 // view engine
 const hbs = require('hbs')
+const exphbs = require('express-handlebars');
 // const bodyParser = require('body-parser')
 
 app.use(express.urlencoded({ extended: true }));
+app.engine('hbs', exphbs({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
-// app.set('views', 'views')
+app.set('views', '/views')
 
 
 // mongoes connect 
