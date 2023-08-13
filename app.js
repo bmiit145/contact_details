@@ -1,13 +1,13 @@
 const express = require('express')
 const app = express();
+const multer = require('multer')
 const port = 3000
 
 // view engine
 const hbs = require('hbs')
-const bodyParser = require('body-parser')
+// const bodyParser = require('body-parser')
 
-app.use(bodyParser.json());       
-app.use(bodyParser.urlencoded({extended: true})); 
+app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'hbs');
 app.set('views', 'views')
 

@@ -14,10 +14,10 @@
 
     {{!-- enctype="multipart/form-data" --}}
     {{!-- needed for if we use a form-data package --}}
-    <form method="post" action="contact/save" id="form_excel" enctype="application/x-www-form-urlencoded">
+    <form method="post" action="contact/save" id="form_excel" enctype="multipart/form-data">
         <fieldset>
             <legend>Contact Excel</legend>
-            <input type="file" name="file">
+            <input type="file" name="csvfile">
             <input type="text" name="abc" value="ABC">
 
         </fieldset>
@@ -28,7 +28,7 @@
         integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
              {{!-- var formData = $(form).serialize(); --}}
-    <script>
+    {{!-- <script>
         $('#form_excel').validate({
             rules: {
                 'file': 'required'
@@ -54,7 +54,7 @@
                 }
             }
         })
-    </script>
+    </script> --}}
 </body>
 
 </html>
