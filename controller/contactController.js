@@ -87,19 +87,22 @@ module.exports = exports = {
     // }
 }
 
+// allowed only PHONE field
+const phoneHeaderRegex = /^\s*phone\b\s*$/i;
+
+// allowed phone with veriations with number
+// const phoneHeaderRegex = /\bphone\b(?:s?\d?)?\b/i;
+
+
 function parseCSVFile(filePath) {
     return new Promise((resolve, reject) => {
         const data = [];
-        // allowed only PHONE field
-        const phoneHeaderRegex = /^\s*phone\b\s*$/i;
 
-        // allowed phone with veriations with number
-        // const phoneHeaderRegex = /\bphone\b(?:s?\d?)?\b/i;
 
         fs.createReadStream(filePath)
             .pipe(csvParser())
             .on('headers', (headers) => {
-                const phoneHeaderRegex = /^\s*phone\b\s*$/i;
+                // const phoneHeaderRegex = /^\s*phone\b\s*$/i;
 
                 if (headers.some(header => phoneHeaderRegex.test(header)) || headers.includes('Phone 1 - Value')) {
                     console.log('CSV file contains the "phone" field.');
@@ -140,9 +143,9 @@ function parseCSVFile(filePath) {
 function getNormalizedPhone(item) {
 
 
-    const PhoneRegex = /^\s*phone\b\s*$/i;
+    // const PhoneRegex = /^\s*phone\b\s*$/i;
     for (const key in item) {
-        if (PhoneRegex.test(key)) {
+        if (phoneHeaderRegex.test(key)) {
             return item[key];
         } else if (key == 'Phone 1 - Value') {
             return item[key];
@@ -162,7 +165,7 @@ function sendToPythonAPI(phonedata) {
 
     const postData = formattedData;
 
-    console.log('Sending data to Python API:', postData)
+    // console.log('Sending data to Python API:', postData)
 
     return axios.post(apiUrl, postData);
 }
