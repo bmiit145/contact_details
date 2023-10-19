@@ -109,16 +109,23 @@ function parseCSVFile(filePath) {
                 }
             })
             .on('data', (row) => {
-                Phonevalue = getNormalizedPhone(row);
-                data.push(Phonevalue);
+                // without field name
+                // Phonevalue = getNormalizedPhone(row);
+                // data.push(Phonevalue);
+
+                //with field name
+                data.push(row);
             })
             .on('end', () => {
                 console.log('CSV file read and processed.');
-                // const phonedata = data.map(item => ({
-                //     phone: getNormalizedPhone(item),
-                // }));
+                // with field name
+                const phonedata = data.map(item => ({
+                    phone: getNormalizedPhone(item),
+                }));
 
-                phonedata = data;
+                // without field name
+                // phonedata = data;
+
                 // console.log(data)
                 resolve(phonedata);
             })
@@ -149,8 +156,8 @@ function sendToPythonAPI(phonedata) {
 
     // Create an array of objects with the "phone" attribute in the format you want
     const formattedData = phonedata.map(item => ({
-        // phone: item.phone,
-        phone: item,
+        phone: item.phone,
+        // phone: item,
     }));
 
     const postData = formattedData;
