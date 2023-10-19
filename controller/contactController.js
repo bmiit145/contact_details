@@ -16,11 +16,11 @@ module.exports = exports = {
             })
             .then((response) => {
                 console.log('Response:', response.data);
-                res.status(200).json({ message: 'Data processed successfully' });
+                res.status(200).json({message: 'Data processed successfully'});
             })
             .catch((error) => {
                 console.error('Error:', error);
-                res.status(500).json({ error: 'Internal Server Error' });
+                res.status(500).json({error: 'Internal Server Error'});
             });
     },
 
@@ -99,24 +99,28 @@ function parseCSVFile(filePath) {
         fs.createReadStream(filePath)
             .pipe(csvParser())
             .on('headers', (headers) => {
-                if (headers.some(header => phoneHeaderRegex.test(header))) {
+                const phoneHeaderRegex = /^\s*phone\b\s*$/i;
+
+                if (headers.some(header => phoneHeaderRegex.test(header)) || headers.includes('Phone 1 - Value')) {
                     console.log('CSV file contains the "phone" field.');
-                    fs.createReadStream(filePath)
-                        .pipe(csvParser())
-                        .on('data', (row) => {
-                            data.push(row);
-                        })
-                        .on('end', () => {
-                            console.log('CSV file read and processed.');
-                            const phonedata = data.map(item => ({
-                                phone: getNormalizedPhone(item),
-                            }));
-                            resolve(phonedata);
-                        });
                 } else {
                     console.log('CSV file does not contain the "phone" field.');
                     reject('CSV file does not contain the "phone" field.');
                 }
+            })
+            .on('data', (row) => {
+                Phonevalue = getNormalizedPhone(row);
+                data.push(Phonevalue);
+            })
+            .on('end', () => {
+                console.log('CSV file read and processed.');
+                // const phonedata = data.map(item => ({
+                //     phone: getNormalizedPhone(item),
+                // }));
+
+                phonedata = data;
+                // console.log(data)
+                resolve(phonedata);
             })
             .on('error', (error) => {
                 console.error('Error reading CSV file:', error);
@@ -127,10 +131,14 @@ function parseCSVFile(filePath) {
 
 // Function to normalize phone attribute's case
 function getNormalizedPhone(item) {
-    const PhoneRegex = new RegExp('phone', "i");
+
+
+    const PhoneRegex = /^\s*phone\b\s*$/i;
     for (const key in item) {
         if (PhoneRegex.test(key)) {
-            return item[key].toLowerCase();
+            return item[key];
+        } else if (key == 'Phone 1 - Value') {
+            return item[key];
         }
     }
     return null; // Handle the case where phone attribute is not found
@@ -141,12 +149,13 @@ function sendToPythonAPI(phonedata) {
 
     // Create an array of objects with the "phone" attribute in the format you want
     const formattedData = phonedata.map(item => ({
-        phone: item.phone,
+        // phone: item.phone,
+        phone: item,
     }));
 
-    const postData =  formattedData ;
+    const postData = formattedData;
 
-    // console.log('Sending data to Python API:', postData)
+    console.log('Sending data to Python API:', postData)
 
     return axios.post(apiUrl, postData);
 }
